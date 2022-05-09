@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import "./style.css";
-
 import { FetchData } from "./FetchData";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
+
 
 export const Basic_form = () => {
   const [email, setEmail] = useState("");
@@ -12,12 +17,20 @@ export const Basic_form = () => {
   const [text, settext] = useState("Show Data");
 
   const submitForm = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     const newEntry = { email: email, password: password };
     setAllEntry([...allEntry, newEntry]);
     console.log(allEntry);
     sendData(newEntry);
+    sleep(2000).then(() => {
+      window.location.reload();
+    });
   };
+
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
 
   async function sendData(data) {
     const fromatedData = { data };
@@ -30,6 +43,15 @@ export const Basic_form = () => {
     });
     if (response.ok) {
       console.log("Data Send Successfuly!");
+      toast.success("Registered", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+      });
     }
   }
   async function reciveData() {
@@ -151,6 +173,17 @@ export const Basic_form = () => {
         </form>
         {/* <div>{show ? <FetchData /> : null}</div> */}
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };
